@@ -3,7 +3,8 @@ const db = require("../db/connection");
 
 const User = db.define("user", {
     name: Sequelize.STRING,
-    age: Sequelize.NUMBER
+    age: Sequelize.INTEGER,
+    
 })
 
 module.exports = User;

@@ -36,7 +36,7 @@ router.get("/:id", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
     try {
         const user = await User.create(req.body);
-
+        console.log(user);
         if (user) {
             res.status(200).json(user);
         } else {
