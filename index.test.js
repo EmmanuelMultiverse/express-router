@@ -1,6 +1,6 @@
 const app = require("./src/app")
 const request = require("supertest");
-const { User } = require("./models")
+const { User, Fruit } = require("./models")
 const { seedUsers } = require("./seedData")
 
 describe("/users endpoint", () => {
@@ -59,6 +59,20 @@ describe("/users endpoint", () => {
         expect(res.body).toMatchObject(newUser);
     });
 
+    test("POST /users invalid request route should return error", async () => {
+        const newUser = {
+            name: "new_user",
+            age: 20,
+
+        };
+
+        const res = await request(app).post("/users").send(newUser);
+
+        expect(res.statusCode).toBe(200);
+
+        expect(res.body).toMatchObject(newUser);
+    });
+
     test("PUT /users/:id route", async () => {
         const newUser = {
             name: "new_user",
@@ -85,4 +99,39 @@ describe("/users endpoint", () => {
         });
     });
 });
+
+describe("Fruits endpoint", () => {
+    test("Verify /POST route with valid request", async () => {
+        const newFruit = {
+            name: "Apple",
+            color: "Red",
+
+        }
+
+        const res = await request(app).post("/fruits").send(newFruit);
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toMatchObject(newFruit);
+    })
+    
+    test("Verify /POST route with bad request - no color", async () => {
+        const badRequest = {
+            name: "Apple",
+
+        }
+
+        const res = await request(app).post("/fruits").send(badRequest);
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toMatchObject({
+            "error": [
+                {
+                    "msg": "Invalid value",
+                    "param": "color",
+                    "location": "body"
+                }
+            ]
+        });
+    })
+})
 
