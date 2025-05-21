@@ -3,8 +3,11 @@ const router = express.Router();
 const { Fruit } = require("../models");
 const { check, validationResult } = require("express-validator");
 
+router.post("/", [])
+
 router.post("/", [
     check("color").not().isEmpty().trim(),
+    check("name").not().isEmpty().trim(),
 
 ], async (req, res, next) => {
 

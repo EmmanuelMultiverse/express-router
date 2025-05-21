@@ -2,7 +2,15 @@ const express = require("express");
 const { User } = require("../models");
 const { check, validationResult } = require("express-validator");
 
+
+
 const router = express.Router();
+
+router.post("/", [
+    check("name").not().isEmpty().trim(),
+    check("age").not().isEmpty().isNumeric(),
+    check("name").isLength({ min: 5, max: 15}),
+])
 
 router.get("/", async (req, res, next) => {
     try {
@@ -34,10 +42,7 @@ router.get("/:id", async (req, res, next) => {
     }
 })
 
-router.post("/", [
-    check("name").not().isEmpty().trim(),
-
-], async (req, res, next) => {
+router.post("/", async (req, res, next) => {
     try {
 
         const errors = validationResult(req);
